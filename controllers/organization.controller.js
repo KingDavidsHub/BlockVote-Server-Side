@@ -18,7 +18,8 @@ exports.signup = async (req,res) =>{
         } else if(!org || org == null){
             await new Organization({
                 name: name,
-                email: email
+                email: email,
+                isVerified: false
             }).save()
 
             const token = await new Token({
@@ -104,7 +105,7 @@ exports.signup = async (req,res) =>{
                 </html>                
                 `;
             sendMail(email,body,"Verify Email")
-            
+
             res.status(200).json({
               success: true
             });

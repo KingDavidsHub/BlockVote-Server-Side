@@ -1,5 +1,5 @@
 const Organization = require('../models/organization.model')
-
+const Token = require('../models/token.model')
 
 exports.signup = async (req,res) =>{
     try {

@@ -51,3 +51,5 @@ organizationSchema.methods = {
     }
   },
 };
+
+module.exports = mongoose.model('Organization', organizationSchema)

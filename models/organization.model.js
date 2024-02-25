@@ -16,7 +16,11 @@ const organizationSchema = mongoose.Schema({
         required: true,
         trim:true
     },
-    salt:String
+    salt:String,
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
 })
 
 organizationSchema

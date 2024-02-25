@@ -1,6 +1,7 @@
 const Organization = require('../models/organization.model')
 const Token = require('../models/token.model')
 const moment = require('moment')
+const jwt = require('jsonwebtoken')
 const { sendMail} = require('../helpers/sendMail.helper')
 
 exports.signup = async (req,res) =>{
@@ -119,4 +120,8 @@ exports.signup = async (req,res) =>{
             message: error.message
         })
     }
+}
+
+exports.signin = async(req,res) =>{
+    const { email, password} = req.body
 }

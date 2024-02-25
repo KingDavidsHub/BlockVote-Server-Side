@@ -7,6 +7,13 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+////////////////////
+const organizationRoutes = require('./routes/organization.router')
+
+
+
+//////////////////
+
 
 
 // MiddleWare
@@ -14,6 +21,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 app.use(formData.parse());
+
+////////////////////
+app.use("/api/organization", organizationRoutes)
+
+////////////////////
 
 const uri = process.env.MONGO_URI;
 

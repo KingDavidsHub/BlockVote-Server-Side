@@ -1,6 +1,7 @@
 const Organization = require('../models/organization.model')
 const Token = require('../models/token.model')
 const moment = require('moment')
+const { sendMail} = require('../helpers/sendMail.helper')
 
 exports.signup = async (req,res) =>{
     try {
@@ -102,7 +103,8 @@ exports.signup = async (req,res) =>{
                 </body>
                 </html>                
                 `;
-            // sendRealEmail(user.email,"Verify Email", body, user.campus, "Verification")
+            sendMail(email,body,"Verify Email")
+            
             res.status(200).json({
               success: true
             });

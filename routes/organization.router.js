@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 
-const { signup, signin, deleteAllOrganizations} = require('../controllers/organization.controller')
+const { signup, signin, deleteAllOrganizations} = require('../controllers/organization.auth')
 
 
 router.route('/signup').post(signup)

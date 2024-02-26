@@ -19,6 +19,10 @@ const userSchema =  mongoose.Schema({
     },
     salt: {
         type: String
+    }, 
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 },
 {timestamps: true}
@@ -53,3 +57,5 @@ userSchema.methods = {
           }
         },
 };
+
+module.exports = mongoose.model("User", userSchema)

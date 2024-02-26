@@ -210,3 +210,4 @@ exports.deleteAllOrganizations = async(req,res) =>{
         })
     }
 }
+

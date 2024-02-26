@@ -4,6 +4,8 @@ const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const { sendMail} = require('../helpers/sendMail.helper')
 
+require('dotenv').config()
+
 exports.signup = async (req,res) =>{
     try {
         const { email, name} = req.body;
@@ -17,9 +19,9 @@ exports.signup = async (req,res) =>{
                 error: "Email already exist. Please proceed to sign in",
               });
         } else if(!org || org == null){
+            const data = req.body;
             await new Organization({
-                name: name,
-                email: email,
+                ...data,
                 isVerified: false
             }).save()
 
@@ -123,6 +125,88 @@ exports.signup = async (req,res) =>{
 }
 
 exports.signin = async(req,res) =>{
-    const { email, password} = req.body
-    // dev
+    try {
+        const { email, password} = req.body
+
+    const org = await Organization.findOne({
+        email: email
+    })
+
+
+    if(!org || org == null){
+        return res.status(401).json({
+            success: false,
+            message: "Such Organization does not exist"
+        })
+    }
+
+
+    if (!org.authenticate(password)) {
+        return res.status(401).json({
+          error: "Email and password does not match",
+        });
+      }
+  
+      // Send Email
+      //sendRealEmail(user.email, "Sign In Successfull", "Signin Alert");
+  
+      // create a token
+      const refreshToken = jwt.sign(
+        { _id: user._id },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: "30d",
+        }
+      );
+  
+      const token = jwt.sign({ _id: org._id }, process.env.JWT_SECRET, {
+        expiresIn: "48h",
+      });
+      // Put token in cookie
+      res.cookie("refreshToken", refreshToken, {
+        expire: new Date(new Date().getTime() + 2592000000)
+
+      });
+      res.cookie("token", token, { expire: new Date() + 24 *60 * 60 * 1000 });
+  
+      // Send response to front end
+      const {
+        _id,
+        isVerified,
+        name,
+      } = org;
+      return res.json({
+        token,
+        refreshToken,
+        organization: {
+          _id,
+          isVerified,
+          email,
+          name
+        },
+      });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.deleteAllOrganizations = async(req,res) =>{
+    try {
+        await Organization.find({}).deleteMany({})
+
+        res.status(200).json({
+            success: true,
+            message: "Organizations Deleted successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
 }

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const crypto = require("crypto");
 const uuidv1 = require('uuidv1');
+const crypto = require('crypto')
 
 const organizationSchema = mongoose.Schema({
     name: {
@@ -13,9 +13,12 @@ const organizationSchema = mongoose.Schema({
     },
     encry_password: {
         type: String,
+        require: true,
         trim:true
     },
-    salt:String,
+    salt:{
+      type:String
+    },
     isVerified: {
         type: Boolean,
         default: false
@@ -44,6 +47,7 @@ organizationSchema.methods = {
   securePassword: function (plainpassword) {
     if (!plainpassword) return "Input a strong password";
     try {
+
       return crypto
         .createHmac("sha256", this.salt)
         .update(plainpassword)
@@ -54,4 +58,5 @@ organizationSchema.methods = {
   },
 };
 
-module.exports = mongoose.model('Organization', organizationSchema)
+
+module.exports = mongoose.model("Organization", organizationSchema)

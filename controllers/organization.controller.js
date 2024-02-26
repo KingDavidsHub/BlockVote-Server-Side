@@ -152,7 +152,7 @@ exports.signin = async(req,res) =>{
   
       // create a token
       const refreshToken = jwt.sign(
-        { _id: user._id },
+        { _id: org._id },
         process.env.REFRESH_TOKEN_SECRET,
         {
           expiresIn: "30d",

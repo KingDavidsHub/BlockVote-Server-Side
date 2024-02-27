@@ -1,25 +1,27 @@
-const Organization = require('../models/organization.model')
+const User = require('../models/user.model')
 const Token = require('../models/token.model')
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
 const { sendMail} = require('../helpers/sendMail.helper')
 
+require('dotenv').config()
+
 exports.signup = async (req,res) =>{
     try {
-        const { email, name} = req.body;
+        const { email} = req.body;
 
-        const org = await Organization.findOne({
+        const user = await User.findOne({
             email: email
         })
 
-        if(org || org != null){
+        if(user || user != null){
             return res.status(403).json({
                 error: "Email already exist. Please proceed to sign in",
               });
-        } else if(!org || org == null){
-            await new Organization({
-                name: name,
-                email: email,
+        } else if(!user || user == null){
+            const data = req.body;
+            await new User({
+                ...data,
                 isVerified: false
             }).save()
 
@@ -123,6 +125,73 @@ exports.signup = async (req,res) =>{
 }
 
 exports.signin = async(req,res) =>{
-    const { email, password} = req.body
-    // dev
+    try {
+        const { email, password} = req.body
+
+    const user = await User.findOne({
+        email: email
+    })
+
+
+    if(!user || user == null){
+        return res.status(401).json({
+            success: false,
+            message: "Such User does not exist"
+        })
+    }
+
+
+    if (!user.authenticate(password)) {
+        return res.status(401).json({
+          error: "Email and password does not match",
+        });
+      }
+  
+      // Send Email
+      //sendRealEmail(user.email, "Sign In Successfull", "Signin Alert");
+  
+      // create a token
+      const refreshToken = jwt.sign(
+        { _id: user._id },
+        process.env.REFRESH_TOKEN_SECRET,
+        {
+          expiresIn: "30d",
+        }
+      );
+  
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "48h",
+      });
+      // Put token in cookie
+      res.cookie("refreshToken", refreshToken, {
+        expire: new Date(new Date().getTime() + 2592000000)
+
+      });
+      res.cookie("token", token, { expire: new Date() + 24 *60 * 60 * 1000 });
+  
+      // Send response to front end
+      const {
+        _id,
+        isVerified,
+        firstname,
+        lastname,
+      } = user;
+      return res.json({
+        token,
+        refreshToken,
+        user: {
+          _id,
+          isVerified,
+          email,
+          firstname,
+          lastname
+        },
+      });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
 }

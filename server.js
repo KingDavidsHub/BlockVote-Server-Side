@@ -9,7 +9,7 @@ require("dotenv").config();
 
 ////////////////////
 const organizationRoutes = require('./routes/organization.router')
-
+const userRoutes = require('./routes/user.router')
 
 
 //////////////////
@@ -24,6 +24,7 @@ app.use(formData.parse());
 
 ////////////////////
 app.use("/api/organization", organizationRoutes)
+app.use("/api/user", userRoutes)
 
 ////////////////////
 

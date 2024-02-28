@@ -126,3 +126,42 @@ exports.updateCandidateInfo = async (req,res) =>{
   }
 }
 
+
+exports.deleteCandidate = async( req,res) =>{
+  try {
+    await Candidate.findByIdAndRemove(req.params.candidateId)
+
+
+    res.status(200).json({
+      success: true,
+      message: "Candidate deleted successfully"
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
+
+exports.deleteAllCandidate = async(req,res) =>{
+  try {
+
+      const { election} = req.body
+      await Candidate.find({election: election}).deleteMany({})
+
+      res.status(200).json({
+        success: true,
+        message: "Successfully deleted all candidates for this election"
+      })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+

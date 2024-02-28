@@ -14,6 +14,10 @@ const candidateSchema = mongoose.Schema({
         type: String,
         required: true
     }, 
+    election: {
+        type: String,
+        required: true
+    },
     image: {
         type: Array,
         required: true

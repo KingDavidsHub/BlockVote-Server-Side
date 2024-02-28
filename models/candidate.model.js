@@ -20,4 +20,4 @@ const candidateSchema = mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model = ("Candidate", candidateSchema)
+module.exports = mongoose.model("Candidate", candidateSchema)

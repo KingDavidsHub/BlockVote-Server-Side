@@ -103,5 +103,26 @@ exports.getAllCandidates = async(req,res) => {
         message: error.message
     })
   }
+} 
+
+
+
+exports.updateCandidateInfo = async (req,res) =>{
+  try {
+      const data = req.body
+
+    const candidate = await Candidate.findByIdAndUpdate(req.params.candidateId, {$set : data}, {new:true})
+
+    res.status(200).json({
+      success: true,
+      data: candidate
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
 }
 

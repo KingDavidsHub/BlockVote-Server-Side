@@ -145,6 +145,24 @@ exports.deleteCandidate = async( req,res) =>{
   }
 }
 
+exports.getCandidate = async (req, res) =>{
+  try {
+
+    const candidate = await Candidate.findById(req.params.candidateId)
+
+    res.status(200).jsonn({
+      success: true,
+      data: candidate
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
 
 exports.deleteAllCandidate = async(req,res) =>{
   try {

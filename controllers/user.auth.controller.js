@@ -195,3 +195,85 @@ exports.signin = async(req,res) =>{
         })
     }
 }
+
+exports.getTokenByEmail = async(req,res) =>{
+    try {
+        const { email} = req.body;
+
+        const token = await Token.findOne({
+            email: email
+        })
+
+        res.status(200).json({
+            success: true,
+            data: token
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+
+exports.verifyUser = async(req,res) =>{
+    try {
+        const { email} = req.body;
+
+        const user = await User.findOne({
+            email: email
+        })
+
+        await User.findByIdAndUpdate(user._id, {
+            isVerified: true
+        }, {
+            new: true
+        })
+
+        console.log(user);
+
+        if(user != null){
+            res.status(200).json({
+                success: true,
+                message: "User verified successfully",
+                data: user
+            })
+        }
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.getAllUsers = async(req,res) =>{
+    try {
+        const users = await User.find({})
+
+        if(users != null || users.length != 0 ){
+            res.status(200).json({
+                no: users.length,
+                data: users
+            })
+        } else{ 
+            res.status(200).json({
+                message: "No Users"
+            })
+        }
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}

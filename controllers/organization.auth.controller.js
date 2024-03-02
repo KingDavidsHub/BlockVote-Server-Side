@@ -211,3 +211,48 @@ exports.deleteAllOrganizations = async(req,res) =>{
     }
 }
 
+exports.updateOrganization = async(req,res) =>{
+    try {
+        await Organization.findByIdAndUpdate(req.params.organizationId, { $set: req.body}, {
+            new: true,
+            runValidators: true
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "Organization Update Successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.getAllOrganizations = async(req,res) =>{
+    try {
+        const organizations = await Organization.find({})
+
+        if(organizations != null && organizations.length != 0){
+            res.status(200).json({
+                success: true,
+                data: organizations
+            })
+        } else{
+            res.status(200).json({
+                success: true,
+                message: "No Organizations"
+            })
+        }
+
+       
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}

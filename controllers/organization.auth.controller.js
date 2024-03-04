@@ -211,3 +211,105 @@ exports.deleteAllOrganizations = async(req,res) =>{
     }
 }
 
+exports.updateOrganization = async(req,res) =>{
+    try {
+        await Organization.findByIdAndUpdate(req.params.organizationId, { $set: req.body}, {
+            new: true,
+            runValidators: true
+        })
+
+        res.status(200).json({
+            success: true,
+            message: "Organization Update Successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.getAllOrganizations = async(req,res) =>{
+    try {
+        const organizations = await Organization.find({})
+
+        if(organizations != null && organizations.length != 0){
+            res.status(200).json({
+                success: true,
+                data: organizations
+            })
+        } else{
+            res.status(200).json({
+                success: true,
+                message: "No Organizations"
+            })
+        }
+
+       
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
+exports.verifyUser = async(req,res) =>{
+    try {
+        const { token } = req.body;
+        let check = await Token.findOne({
+          token: token,
+        });
+      
+        if (!check) {
+          res.status(400).json({
+            message: "Token not found in the Database",
+          });
+        }
+      
+       else if (check.expiryDate < new Date()) {
+          res.status(400).json({
+            message: "Token expired. Hit Resend to get a new token",
+          });
+       } else if (check.isUsed === true) {
+          res.status(400).json({
+            success: false,
+            message: "Token already used. Sign up Again",
+          });
+        } else {
+          check.isUsed = true;
+
+          const org = await Organization.findOne({
+            email: check.email
+          })
+          
+          await Organization.findByIdAndUpdate(org._id, {
+            isVerified: true
+          }, {
+            new: true,
+            runValidators: true
+          })
+          await Token.findById(check._id).deleteMany({})
+      
+      
+        if(org != null){
+            res.status(200).json({
+                success: true,
+                message: "Organization verified successfully",
+                data: org
+            })
+        }
+    }
+
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}

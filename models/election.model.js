@@ -42,6 +42,8 @@ const electionSchema = new mongoose.Schema({
             default: false
         }
     }]
+},{
+    timestamps:true
 })
 
 module.exports = mongoose.model("Election", electionSchema)

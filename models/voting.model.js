@@ -21,6 +21,9 @@ const votingSchema = new mongoose.Schema({
         type: String
     }, 
     candidates: {
-        
+        type:  mongoose.Types.ObjectId, 
+        ref:'Candidate'
     }
 })
+
+module.exports = mongoose.model("Voting", votingSchema)

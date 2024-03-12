@@ -15,7 +15,8 @@ const candidateSchema = mongoose.Schema({
         required: true
     }, 
     election: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref:"Election",
         required: true
     },
     image: {

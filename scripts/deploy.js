@@ -1,13 +1,18 @@
-const { ethers } = require("hardhat")
+const { ethers } = require("hardhat");
+const Election = require('../models/election.model');
 
 async function main() {
-  //const Voting = await ethers.ContractFactory("Voting")
-  const Voting = await ethers.getContractFactory("Voting")
-  // Start deployment, returning a promise that resolves to a contract object
-  const Voting_ = await Voting.deploy(["KH", "Yo", "Obi", "U"], 80000000);
-  await Voting_.deployed();
+    // Fetch elections from MongoDB
+    const election = await Election.findOne({}).sort({ createdAt: -1 }).limit(1);
+    // Deploy a separate instance of the voting smart contract for each election
+        const candidateNames = election.candidates.map(candidate => candidate.name);
 
-  console.log("Contract deployed to address:", Voting_.address);
+        // Deploy the contract with candidate names and duration from the election
+        const Voting = await ethers.getContractFactory("Voting");
+        const Voting_ = await Voting.deploy(candidateNames, election.duration);
+        await Voting_.deployed();
+
+        console.log(`Contract deployed for election ${election.name} to address:`, Voting_.address);
 }
 
 main()

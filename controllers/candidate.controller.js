@@ -5,7 +5,7 @@ const cloudinary = require("cloudinary").v2;
 exports.addNewCandidate = async (req,res) =>{
     try {
 
-        const { firstname, lastname, position, election } = req.body;
+        const { firstname, lastname, position } = req.body;
 
 
         cloudinary.config({
@@ -43,7 +43,7 @@ exports.addNewCandidate = async (req,res) =>{
             firstname: firstname,
             lastname: lastname,
             position: position,
-            election:election,
+            election:req.params.electionId,
             image: urls
         }).save()
 

@@ -11,8 +11,8 @@ require("dotenv").config();
 const organizationRoutes = require('./routes/organization.router')
 const userRoutes = require('./routes/user.router')
 const candidateRoutes =  require('./routes/candidate.router')
-
-
+const electionRoutes = require('./routes/election.router')
+const terminalRoutes = require('./routes/terminal.router')
 //////////////////
 
 
@@ -27,6 +27,8 @@ app.use(formData.parse());
 app.use("/api/organization", organizationRoutes)
 app.use("/api/user", userRoutes)
 app.use("/api/candidate", candidateRoutes)
+app.use('/api/election',electionRoutes)
+app.use('/api/terminal', terminalRoutes)
 
 ////////////////////
 

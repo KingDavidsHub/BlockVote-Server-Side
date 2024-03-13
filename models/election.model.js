@@ -41,7 +41,11 @@ const electionSchema = new mongoose.Schema({
             type: Boolean,
             default: false
         }
-    }]
+    }],
+    duration:{
+        type: Number,
+        default: 5000
+    }
 },{
     timestamps:true
 })

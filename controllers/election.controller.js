@@ -65,7 +65,9 @@ exports.registerForElection = async(req,res) =>{
 
 exports.getElection = async(req,res) =>{
     try {
-        const election =  await Election.findById(req.params.electionId)
+        // const election =  await Election.findById(req.params.electionId)
+
+        const election = await Election.find({}).sort({ createdAt: -1 }).limit(1);
 
         res.status(200).json({
             success: true,

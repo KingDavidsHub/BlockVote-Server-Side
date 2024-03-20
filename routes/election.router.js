@@ -7,7 +7,7 @@ const { createElection, populateCandidates, registerForElection, getElection} = 
 router.route("/createElection").post(createElection)
 router.route('/getElection/:electionId').get(getElection)
 router.route('/populateCandidate').put(populateCandidates)
-router.route('/registerForElection').post(registerForElection)
+router.route('/registerForElection/:electionId').post(registerForElection)
 
 
 module.exports = router

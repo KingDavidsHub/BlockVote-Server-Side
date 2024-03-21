@@ -1,5 +1,6 @@
 const Candidate = require('../models/candidate.model')
 const cloudinary = require("cloudinary").v2;
+const Election = require('../models/election.model')
 
 
 exports.addNewCandidate = async (req,res) =>{
@@ -7,7 +8,7 @@ exports.addNewCandidate = async (req,res) =>{
 
         const { firstname, lastname, position } = req.body;
 
-
+      const election = await Election.findById(req.params.electionId)
         cloudinary.config({
             cloud_name: process.env.CLOUDINARY_CLOUDNAME,
             api_key: process.env.CLOUDINARY_APIKEY,

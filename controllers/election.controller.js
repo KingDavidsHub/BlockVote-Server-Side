@@ -4,7 +4,7 @@ exports.createElection = async (req, res) => {
   try {
     const election = await new Election({
       ...req.body,
-      organzation: req.params.organzationId,
+      organization: req.params.organizationId,
     }).save();
 
     res.status(200).json({

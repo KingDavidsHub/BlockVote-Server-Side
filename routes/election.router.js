@@ -8,11 +8,17 @@ const {
   registerForElection,
   getElection,
   getAllElections,
+  getOrganizationElections,
+  deleteElectionById,
 } = require("../controllers/election.controller");
-router.route("/createElection").post(createElection);
+router.route("/createElection/:organizationId").post(createElection);
+router
+  .route("/getOrganizationElections/:organizationId")
+  .get(getOrganizationElections);
 router.route("/getElection/:electionId").get(getElection);
 router.route("/getAllElections").get(getAllElections);
 router.route("/populateCandidate").put(populateCandidates);
+router.route("/deleteElectionById/:electionId").delete(deleteElectionById);
 router.route("/registerForElection/:electionId").post(registerForElection);
 
 module.exports = router;

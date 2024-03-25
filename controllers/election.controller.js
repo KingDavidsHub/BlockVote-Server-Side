@@ -1,4 +1,5 @@
 const Election = require("../models/election.model");
+const Candidate = require("../models/candidate.model");
 
 exports.createElection = async (req, res) => {
   try {
@@ -22,11 +23,24 @@ exports.createElection = async (req, res) => {
 
 exports.populateCandidates = async (req, res) => {
   try {
-    const election = await Election.findById(req.params.electionId).populate(
-      "candidates"
+    const candidates = await Candidate.find({
+      election: req.params.electionId,
+    });
+
+    const election = await Election.findByIdAndUpdate(
+      req.params.electionId,
+      {
+        $set: {
+          candidates: candidates,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
     );
 
-    re.status(200).json({
+    res.status(200).json({
       success: true,
       data: election,
     });

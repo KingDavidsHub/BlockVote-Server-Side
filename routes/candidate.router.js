@@ -14,7 +14,7 @@ router.route("/addNewCandidate/:electionId").post(addNewCandidate);
 router.route("/getAllCandidates/:electionId").get(getAllCandidates);
 router.route("/getCandidate/candidateId").get(getCandidate);
 router.route("/updateCandidateInfo/:candidateId").put(updateCandidateInfo);
-router.route("/deleteAllCandidate", deleteAllCandidate);
+router.route("/deleteAllCandidate").delete(deleteAllCandidate);
 router.route("/deleteCandidate/:candidateId", deleteCandidate);
 
 module.exports = router;

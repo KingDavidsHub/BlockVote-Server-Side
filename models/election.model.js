@@ -23,8 +23,7 @@ const electionSchema = new mongoose.Schema(
     },
     candidates: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: "Candidate",
+        type: Object,
       },
     ],
     registeredVoters: [

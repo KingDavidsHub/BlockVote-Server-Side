@@ -152,3 +152,29 @@ exports.getOrganizationElections = async (req, res) => {
     });
   }
 };
+
+exports.editElectionById = async (req, res) => {
+  try {
+    const election = await Election.findByIdAndUpdate(
+      req.params.electionId,
+      {
+        $set: req.body,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      data: election,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

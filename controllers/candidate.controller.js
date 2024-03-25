@@ -177,3 +177,27 @@ exports.deleteAllCandidate = async (req, res) => {
     });
   }
 };
+
+exports.uploadCandidates = async (req, res) => {
+  try {
+    const { candidateArray } = req.body;
+
+    for (i = 0; i < candidateArray.length; i++) {
+      await new Candidate({
+        ...candidateArray[i],
+        election: req.params.electionId,
+      }).save();
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Successfully Uploaded candidates",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

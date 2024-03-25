@@ -8,9 +8,11 @@ const {
   deleteAllCandidate,
   deleteCandidate,
   getCandidate,
+  uploadCandidates,
 } = require("../controllers/candidate.controller");
 
 router.route("/addNewCandidate/:electionId").post(addNewCandidate);
+router.route("/uploadCandidates/:electionId").post(uploadCandidates);
 router.route("/getAllCandidates/:electionId").get(getAllCandidates);
 router.route("/getCandidate/candidateId").get(getCandidate);
 router.route("/updateCandidateInfo/:candidateId").put(updateCandidateInfo);

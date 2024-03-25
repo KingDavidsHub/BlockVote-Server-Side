@@ -192,3 +192,20 @@ exports.editElectionById = async (req, res) => {
     });
   }
 };
+
+exports.deleteAllElections = async (req, res) => {
+  try {
+    await Election.find({}).deleteMany({});
+
+    res.status(200).json({
+      success: true,
+      message: "All elections deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

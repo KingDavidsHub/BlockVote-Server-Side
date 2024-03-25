@@ -11,6 +11,7 @@ const {
   getOrganizationElections,
   deleteElectionById,
   editElectionById,
+  deleteAllElections,
 } = require("../controllers/election.controller");
 router.route("/createElection/:organizationId").post(createElection);
 router
@@ -18,6 +19,7 @@ router
   .get(getOrganizationElections);
 router.route("/getElection/:electionId").get(getElection);
 router.route("/getAllElections").get(getAllElections);
+router.route("/deleteAllElections").delete(deleteAllElections);
 router.route("/populateCandidates/:electionId").put(populateCandidates);
 router.route("/deleteElectionById/:electionId").delete(deleteElectionById);
 router.route("/editElectionById/:electionId").put(editElectionById);

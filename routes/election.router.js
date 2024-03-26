@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   createElection,
   populateCandidates,
-  registerForElection,
+  populateVoters,
   getElection,
   getAllElections,
   getOrganizationElections,
@@ -23,6 +23,6 @@ router.route("/deleteAllElections").delete(deleteAllElections);
 router.route("/populateCandidates/:electionId").put(populateCandidates);
 router.route("/deleteElectionById/:electionId").delete(deleteElectionById);
 router.route("/editElectionById/:electionId").put(editElectionById);
-router.route("/registerForElection/:electionId").post(registerForElection);
+router.route("/populateVoters/:electionId").post(populateVoters);
 
 module.exports = router;

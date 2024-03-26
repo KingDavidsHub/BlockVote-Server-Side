@@ -180,11 +180,9 @@ exports.deleteAllCandidate = async (req, res) => {
 
 exports.uploadCandidates = async (req, res) => {
   try {
-    const { candidateArray } = req.body;
-
-    for (i = 0; i < candidateArray.length; i++) {
+    for (i = 0; i < req.body.length; i++) {
       await new Candidate({
-        ...candidateArray[i],
+        ...req.body[i],
         election: req.params.electionId,
       }).save();
     }

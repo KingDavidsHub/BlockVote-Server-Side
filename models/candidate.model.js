@@ -25,6 +25,10 @@ const candidateSchema = mongoose.Schema({
   age: {
     type: Number,
   },
+  voteCount: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("Candidate", candidateSchema);

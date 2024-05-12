@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: blockvote-server-side
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: blockvote-server-side
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: blockvote-server-side
-        image: your-image-name:tag
+        image: kingdavid678/blockvote-server-side:latest
         ports:
         - containerPort: 8080  # Adjust port as needed
         envFrom:
@@ -30,6 +30,6 @@ spec:
     app: blockvote-server-side
   ports:
   - protocol: TCP
-    port: 8080
-    targetPort: 8080
+    port: 8081
+    targetPort: 8081
   type: LoadBalancer  # Change this to NodePort if LoadBalancer is not available

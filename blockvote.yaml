@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blockvote-server-side
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: blockvote-server-side
+  template:
+    metadata:
+      labels:
+        app: blockvote-server-side
+    spec:
+      containers:
+      - name: blockvote-server-side
+        image: your-image-name:tag
+        ports:
+        - containerPort: 8080  # Adjust port as needed
+        envFrom:
+        - secretRef:
+            name: blockvote-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blockvote-server-side
+spec:
+  selector:
+    app: blockvote-server-side
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer  # Change this to NodePort if LoadBalancer is not available

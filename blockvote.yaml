@@ -16,7 +16,7 @@ spec:
       - name: blockvote-server-side
         image: kingdavid678/blockvote-server-side:latest
         ports:
-        - containerPort: 8080  # Adjust port as needed
+        - containerPort: 9000  # Adjust port as needed
         envFrom:
         - secretRef:
             name: blockvote-secrets
@@ -28,8 +28,9 @@ metadata:
 spec:
   selector:
     app: blockvote-server-side
+  type: LoadBalancer
   ports:
-  - protocol: TCP
-    port: 8081
-    targetPort: 8081
-  type: LoadBalancer  # Change this to NodePort if LoadBalancer is not available
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30001

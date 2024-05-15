@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blockvote-server-side
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blockvote-server-side
+  template:
+    metadata:
+      labels:
+        app: blockvote-server-side
+    spec:
+      containers:
+      - name: blockvote-server-side
+        image: kingdavid678/blockvote-server-side:latest
+        ports:
+        - containerPort: 9000  # Adjust port as needed
+        envFrom:
+        - secretRef:
+            name: blockvote-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blockvote-server-side
+spec:
+  selector:
+    app: blockvote-server-side
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+      nodePort: 30001

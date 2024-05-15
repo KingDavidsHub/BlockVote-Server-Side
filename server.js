@@ -50,8 +50,9 @@ connect();
 
 app.get("/", (req, res) => {
   res.json({
-    author: ["$avic", "Halel", "King David"],
-    stack: ["React", "Mongodb", "Express", "Solidity", "Hardhat"],
+    author:["$avic", "Halel", "King David"],
+    stack: ["React", "Mongodb", "Express", "Solidity", "Hardhat", "Kubernetes", "Docker"],
+
     project_name: "BlockVote",
   });
 });

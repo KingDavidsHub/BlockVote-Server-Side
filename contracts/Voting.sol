@@ -2,6 +2,48 @@
 pragma solidity ^0.8.7;
 
 contract Voting {
+
+    struct Election {
+        uint id;
+        string name;
+        mapping(uint => string) candidates;
+        mapping(address => bool) registeredVoters;
+        mapping(address => bool) hasVoted;
+        mapping(uint => uint) votesReceived;
+    }
+
+    Election[] public elections;
+
+    function createElection(string memory _name, string[] memory _candidates) public {
+        uint electionId = elections.length;
+        elections.push(Election(electionId, _name));
+        for (uint i = 0; i < _candidates.length; i++) {
+            elections[electionId].candidates[i] = _candidates[i];
+        }
+    }
+
+    function vote(uint _electionId, uint _candidateId) public {
+        require(elections[_electionId].registeredVoters[msg.sender], "Voter is not registered for this election.");
+        require(!elections[_electionId].hasVoted[msg.sender], "Voter has already cast their vote.");
+        elections[_electionId].votesReceived[_candidateId]++;
+        elections[_electionId].hasVoted[msg.sender] = true;
+    }
+
+    function checkEligibility(uint _electionId, address _voter) public view returns (bool) {
+        return elections[_electionId].registeredVoters[_voter];
+    }
+
+    function hasVoted(uint _electionId, address _voter) public view returns (bool) {
+        return elections[_electionId].hasVoted[_voter];
+    }
+
+    function fetchElectionResults(uint _electionId) public view returns (uint[] memory) {
+        uint[] memory results = new uint[](elections[_electionId].candidates.length);
+        for (uint i = 0; i < elections[_electionId].candidates.length; i++) {
+            results[i] = elections[_electionId].votesReceived[i];
+        }
+        return results;
+    }
     struct Candidate {
         string name;
         uint256 voteCount;
